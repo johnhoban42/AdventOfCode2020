@@ -7,13 +7,6 @@ import java.util.HashMap;
 
 public class Day14 {
 	
-	private static void write(HashMap<Long, Long> mem, long addr, long val) {
-		if(mem.containsKey(addr)) {
-			mem.remove(addr);
-		}
-		mem.put(addr, val);
-	}
-	
 	// Handling floating bits in part 2
 	// NEW MASK VALUES:
 	// 0 : no change (static 0)
@@ -21,13 +14,13 @@ public class Day14 {
 	// 2 : force 0 (floating 0)
 	private static void floatingAddrWrite(HashMap<Long, Long> mem, long addr, long val, String mask) {
 		// If there are no floating bits, write to memory
-		// Similar to part 1, the single mask gets split into an OR mask and an AND mask
+		// Similar to part 1, the single mask gets split into two
 		if(!mask.contains("X")) {
 			String orStr = mask.replace('2', '0');
 			String andStr = mask.replace('0', '1').replace('2', '0');
 			long or = Long.parseLong(orStr, 2);
 			long and = Long.parseLong(andStr, 2);
-			write(mem, (addr | or) & and, val);
+			mem.put((addr | or) & and, val);
 			return;
 		}
 		// Branch on the first floating bit, creating two possible addresses
@@ -45,7 +38,7 @@ public class Day14 {
 			e.printStackTrace();
 		}
 		
-		// For part 1, input mask characters get split into 2 masks:
+		// The given mask gets split into into an OR mask and an AND mask
 		// X = (X | 0) & 1
 		// 0 = (X | 0) & 0
 		// 1 = (X | 1) & 1
@@ -64,7 +57,7 @@ public class Day14 {
 				long addr = Long.parseLong(cmd[1]);
 				long val = Long.parseLong(cmd[2]);
 				// Part 1
-				write(mem1, addr, (val | or) & and);
+				mem1.put(addr, (val | or) & and);
 				// Part 2
 				floatingAddrWrite(mem2, addr, val, mask);
 			}
