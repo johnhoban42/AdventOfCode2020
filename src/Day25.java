@@ -9,24 +9,13 @@ public class Day25 {
 		final int DIV = 20201227;
 		
 		/* PART 1 */
-		int subject = 1;
+		long subject = 1;
+		long key = 1;
 		while(subject != CARD) {
 			subject = (subject * 7) % DIV;
-		}
-		
-		subject = 1;
-		int doorLoops = 0;
-		while(subject != DOOR) {
-			subject = (subject * 7) % DIV;
-			doorLoops++;
-		}
-		
-		long key = 1;
-		for(int i = 0; i < doorLoops; i++) {
-			key = (key * CARD) % DIV;
+			key = (key * DOOR) % DIV;
 		}
 		System.out.println(key);
-		
 	}
 	
 }
